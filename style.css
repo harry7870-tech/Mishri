@@ -121,3 +121,10 @@ button.pic{width:100%;border:0;cursor:pointer}
 .cta{display:inline-block;margin-top:16px;background:var(--accent);color:var(--accent-ink);padding:12px 20px;border-radius:10px;font-weight:700;text-decoration:none}
 .nav a[aria-current]{color:var(--accent);font-weight:700}
 footer a{color:var(--muted);margin-right:14px}
+
+#pay{max-height:92vh;overflow:auto;text-align:center}
+.qrbox{display:grid;place-items:center;margin:6px 0 12px;min-height:200px}
+.qrbox canvas,.qrbox img{border:8px solid #fff;border-radius:10px;background:#fff}
+.paybtn{display:block;text-decoration:none;background:var(--accent);color:var(--accent-ink);padding:12px;border-radius:10px;font-weight:700;margin-bottom:10px}
+.upiid{font-size:.92rem;color:var(--muted);margin-bottom:12px}
+@media(min-width:800px){.paybtn{display:none}}

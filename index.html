@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
@@ -51,7 +52,7 @@
     <textarea class="note" id="note" rows="2" placeholder="Note for us (e.g. preferred variant or skin type)"></textarea>
     <div class="sum" id="sum"></div>
     <div class="warn" id="warn"></div>
-    <button class="go" id="checkout">Place order on WhatsApp</button>
+    <button class="go" id="checkout">Continue to payment</button>
   </div>
 </aside>
 
@@ -64,6 +65,16 @@
   <button class="go" id="unlock">Unlock wholesale prices</button>
   <button class="cancel" id="cancel">Stay as customer</button>
 </div>
+<div class="modal" id="pay" role="dialog" aria-labelledby="pt">
+  <h2 id="pt">Pay with UPI</h2>
+  <p id="pinfo"></p>
+  <div id="qr" class="qrbox"></div>
+  <a class="go paybtn" id="upiLink" href="#">Pay with UPI app</a>
+  <div class="upiid">UPI ID: <b id="upiId"></b> <button class="rm" id="copyUpi">Copy</button></div>
+  <button class="go" id="paidBtn">I have paid. Send order on WhatsApp</button>
+  <button class="cancel" id="laterBtn">Place order now, pay later</button>
+  <button class="cancel" id="payBack">Back to cart</button>
+</div>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -73,6 +84,7 @@ const CONFIG = {
   retailerCode: "MISHRI-RETAIL",   // change this, share only with real retailers
   customerDiscount: 10,            // % below MRP that customers pay (override per product with customer:)
   currency: "₹",
+  upi: {id:"8427225250@ptaxis", name:"Jaskaran Singh"},   // payments go here
   /* COUPONS: type "percent" or "flat"; for "customer", "retailer" or "all"; min = minimum order value; max = cap for percent */
   coupons: {
     WELCOME10: {type:"percent", value:10, max:300, for:"customer"},
@@ -138,9 +150,9 @@ const minFor = p => isRetail() ? p.minQty : 1;
 const byId = id => PRODUCTS.find(p=>p.id===+id);
 
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800)}
-function sync(){const any=["drawer","modal","pm"].some(i=>$(i).classList.contains("on"));$("veil").classList.toggle("on",any);document.body.style.overflow=any?"hidden":""}
+function sync(){const any=["drawer","modal","pm","pay"].some(i=>$(i).classList.contains("on"));$("veil").classList.toggle("on",any);document.body.style.overflow=any?"hidden":""}
 function show(id,on){$(id).classList.toggle("on",on);sync()}
-function closeAll(){["drawer","modal","pm"].forEach(i=>$(i).classList.remove("on"));sync();history.replaceState(null,"",location.pathname+location.search)}
+function closeAll(){["drawer","modal","pm","pay"].forEach(i=>$(i).classList.remove("on"));sync();history.replaceState(null,"",location.pathname+location.search)}
 
 function renderChips(){
   $("chips").innerHTML = CATEGORIES.length<2 ? "" : ["All",...CATEGORIES].map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
@@ -285,16 +297,34 @@ $("q").oninput=renderGrid;
 $("applyC").onclick=applyCoupon;
 $("coupon").onkeydown=e=>{if(e.key==="Enter")applyCoupon()};
 
-$("checkout").onclick=()=>{
-  const t=totals();
+let order=null;
+function buildMsg(status){
   const lines = cartIds().map(id=>{const p=byId(id);return `• ${p.brand} ${p.name} × ${cart[id]} = ${money(unitPrice(p)*cart[id])}`});
   const head = isRetail() ? `New RETAILER order${shopName?` from ${shopName}`:""}` : "New CUSTOMER order";
-  const note = $("note").value.trim();
-  const msg = `${head} (Mishri)\n\n${lines.join("\n")}\n\nSubtotal: ${money(t.sub)}`
+  const note = $("note").value.trim(), t=order.t;
+  return `${head} (Mishri)\nOrder ID: ${order.id}\n\n${lines.join("\n")}\n\nSubtotal: ${money(t.sub)}`
     + (t.d?`\nCoupon ${coupon}: −${money(t.d)}`:"") + `\nTotal: ${money(t.total)}`
-    + (note?`\n\nNote: ${note}`:"");
-  window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,"_blank");
+    + `\nPayment: ${status}` + (note?`\n\nNote: ${note}`:"");
+}
+function sendWA(status){window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(buildMsg(status))}`,"_blank")}
+
+$("checkout").onclick=()=>{
+  const t=totals();
+  order={t,id:"MSH-"+Date.now().toString(36).toUpperCase().slice(-5)};
+  const u=CONFIG.upi, amt=t.total.toFixed(2);
+  const link=`upi://pay?pa=${u.id}&pn=${encodeURIComponent(u.name)}&am=${amt}&cu=INR&tn=${encodeURIComponent(order.id)}`;
+  $("pt").textContent=`Pay ${money(t.total)}`;
+  $("pinfo").textContent=`Order ${order.id}. Scan with GPay, PhonePe, Paytm or any UPI app. Pay to ${u.name}.`;
+  $("upiLink").href=link; $("upiId").textContent=u.id;
+  const q=$("qr"); q.innerHTML="";
+  if(window.QRCode){ new QRCode(q,{text:link,width:200,height:200,correctLevel:QRCode.CorrectLevel.M}); }
+  else q.innerHTML=`<img src="images/upi-qr.jpg" alt="UPI QR code" width="200" height="200"><p class="min">Enter the amount ${money(t.total)} yourself when paying.</p>`;
+  show("drawer",false); show("pay",true);
 };
+$("copyUpi").onclick=()=>{try{navigator.clipboard.writeText(CONFIG.upi.id);toast("UPI ID copied")}catch(e){toast(CONFIG.upi.id)}};
+$("paidBtn").onclick=()=>{sendWA("PAID via UPI (screenshot attached below, please verify)");toast("Now attach your payment screenshot in WhatsApp")};
+$("laterBtn").onclick=()=>sendWA("PENDING (will pay later)");
+$("payBack").onclick=()=>{show("pay",false);show("drawer",true)};
 
 $("yr").textContent=new Date().getFullYear();
 renderChips();renderBanner();renderGrid();renderCart();
