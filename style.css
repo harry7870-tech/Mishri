@@ -128,3 +128,10 @@ footer a{color:var(--muted);margin-right:14px}
 .paybtn{display:block;text-decoration:none;background:var(--accent);color:var(--accent-ink);padding:12px;border-radius:10px;font-weight:700;margin-bottom:10px}
 .upiid{font-size:.92rem;color:var(--muted);margin-bottom:12px}
 @media(min-width:800px){.paybtn{display:none}}
+
+#sg{max-height:92vh;overflow:auto}
+.hp{position:absolute!important;left:-9999px;opacity:0;height:0;width:0;padding:0!important;border:0!important}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;color:var(--muted);margin:2px 0 10px}
+.chk input{width:auto;margin:3px 0 0}
+.codebox{font-family:'Bricolage Grotesque',sans-serif;font-size:1.8rem;font-weight:800;letter-spacing:.08em;border:2px dashed var(--accent);color:var(--accent);border-radius:12px;padding:12px;margin:10px 0}
+.joinbtn{position:fixed;left:16px;bottom:16px;z-index:25;background:var(--accent);color:var(--accent-ink);padding:11px 16px;border-radius:999px;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,.25)}

@@ -75,6 +75,29 @@
   <button class="cancel" id="laterBtn">Place order now, pay later</button>
   <button class="cancel" id="payBack">Back to cart</button>
 </div>
+<div class="modal" id="sg" role="dialog" aria-labelledby="sgt">
+  <div id="sgForm">
+    <h2 id="sgt">Get 10% off your first order</h2>
+    <p>Join Mishri for a welcome coupon, new arrivals and offers. We will email your code straight away.</p>
+    <input id="sgName" placeholder="Your name" autocomplete="name">
+    <input id="sgEmail" type="email" placeholder="Email address" autocomplete="email">
+    <input id="sgPhone" type="tel" placeholder="Phone (optional)" autocomplete="tel">
+    <input id="sgHp" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" placeholder="Leave empty">
+    <label class="chk"><input type="checkbox" id="sgOk"> I agree to receive offers and updates from Mishri by email. I can ask to stop at any time.</label>
+    <div class="warn" id="sgErr"></div>
+    <button class="go" id="sgBtn">Join and get my code</button>
+    <button class="cancel" id="sgNo">No thanks</button>
+  </div>
+  <div id="sgDone" style="display:none;text-align:center">
+    <h2>Welcome to Mishri!</h2>
+    <p>Your code is below. We have also emailed it to you. If you do not see it, check your spam folder.</p>
+    <div class="codebox" id="sgCode"></div>
+    <p class="min">Enter it in the coupon box in your cart. Valid on customer orders, up to ₹300 off.</p>
+    <button class="go" id="sgCopy">Copy code</button>
+    <button class="cancel" id="sgClose">Start shopping</button>
+  </div>
+</div>
+<button class="joinbtn" id="joinBtn" style="display:none">🎁 Get 10% off</button>
 <div class="toast" id="toast" role="status"></div>
 
 <script>
@@ -84,6 +107,8 @@ const CONFIG = {
   retailerCode: "MISHRI-RETAIL",   // change this, share only with real retailers
   customerDiscount: 10,            // % below MRP that customers pay (override per product with customer:)
   currency: "₹",
+  signupUrl: "https://script.google.com/macros/s/AKfycbymw2g47zdU0MvRZZyQ4eH_gKp4mHJdKAhOQttG9Acv30UafAZovYyPgcR8FAPxf_ubVQ/exec",                   // paste your Google Apps Script web app URL here
+  welcomeCode: "WELCOME10",
   upi: {id:"8427225250@ptaxis", name:"Jaskaran Singh"},   // payments go here
   /* COUPONS: type "percent" or "flat"; for "customer", "retailer" or "all"; min = minimum order value; max = cap for percent */
   coupons: {
@@ -150,9 +175,10 @@ const minFor = p => isRetail() ? p.minQty : 1;
 const byId = id => PRODUCTS.find(p=>p.id===+id);
 
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800)}
-function sync(){const any=["drawer","modal","pm","pay"].some(i=>$(i).classList.contains("on"));$("veil").classList.toggle("on",any);document.body.style.overflow=any?"hidden":""}
+function sync(){const any=["drawer","modal","pm","pay","sg"].some(i=>$(i).classList.contains("on"));$("veil").classList.toggle("on",any);document.body.style.overflow=any?"hidden":""}
 function show(id,on){$(id).classList.toggle("on",on);sync()}
-function closeAll(){["drawer","modal","pm","pay"].forEach(i=>$(i).classList.remove("on"));sync();history.replaceState(null,"",location.pathname+location.search)}
+function closeAll(){
+  if($("sg").classList.contains("on")&&!store.get("mishri_join","")) store.set("mishri_join","declined");["drawer","modal","pm","pay","sg"].forEach(i=>$(i).classList.remove("on"));sync();history.replaceState(null,"",location.pathname+location.search)}
 
 function renderChips(){
   $("chips").innerHTML = CATEGORIES.length<2 ? "" : ["All",...CATEGORIES].map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
@@ -325,6 +351,31 @@ $("copyUpi").onclick=()=>{try{navigator.clipboard.writeText(CONFIG.upi.id);toast
 $("paidBtn").onclick=()=>{sendWA("PAID via UPI (screenshot attached below, please verify)");toast("Now attach your payment screenshot in WhatsApp")};
 $("laterBtn").onclick=()=>sendWA("PENDING (will pay later)");
 $("payBack").onclick=()=>{show("pay",false);show("drawer",true)};
+
+/* ---- sign-up ---- */
+function renderJoin(){$("joinBtn").style.display = store.get("mishri_join","")==="joined" ? "none" : "block"}
+function openJoin(){$("sgErr").textContent="";$("sgForm").style.display="";$("sgDone").style.display="none";show("sg",true)}
+function declineJoin(){if(!store.get("mishri_join",""))store.set("mishri_join","declined");show("sg",false);renderJoin()}
+function doneJoin(){$("sgCode").textContent=CONFIG.welcomeCode;$("sgForm").style.display="none";$("sgDone").style.display="";store.set("mishri_join","joined");renderJoin()}
+$("joinBtn").onclick=openJoin;
+$("sgNo").onclick=declineJoin;
+$("sgClose").onclick=()=>show("sg",false);
+$("sgCopy").onclick=()=>{try{navigator.clipboard.writeText(CONFIG.welcomeCode);toast("Code copied")}catch(e){toast(CONFIG.welcomeCode)}};
+$("sgBtn").onclick=async()=>{
+  const name=$("sgName").value.trim(), email=$("sgEmail").value.trim(), phone=$("sgPhone").value.trim();
+  if(!name){$("sgErr").textContent="Please enter your name.";return}
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){$("sgErr").textContent="Please enter a valid email address.";return}
+  if(!$("sgOk").checked){$("sgErr").textContent="Please tick the box to agree.";return}
+  if(!CONFIG.signupUrl){$("sgErr").textContent="Sign-up is not connected yet. The site owner needs to add the sign-up link.";return}
+  $("sgBtn").disabled=true;$("sgBtn").textContent="Joining...";
+  try{
+    await fetch(CONFIG.signupUrl,{method:"POST",mode:"no-cors",body:new URLSearchParams({name,email,phone,consent:"yes",website:$("sgHp").value,site:location.href.split("#")[0]})});
+    doneJoin();
+  }catch(e){$("sgErr").textContent="Could not sign you up right now. Please check your internet and try again."}
+  $("sgBtn").disabled=false;$("sgBtn").textContent="Join and get my code";
+};
+renderJoin();
+if(!store.get("mishri_join","")) setTimeout(()=>{ if(!["drawer","modal","pm","pay"].some(i=>$(i).classList.contains("on"))) openJoin() },1200);
 
 $("yr").textContent=new Date().getFullYear();
 renderChips();renderBanner();renderGrid();renderCart();
