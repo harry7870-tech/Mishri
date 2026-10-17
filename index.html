@@ -4,106 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mishri – Cosmetics, grooming & everyday essentials</title>
-<meta name="description" content="Mishri: a general store with wholesale prices for retailers and low prices for everyone else.">
+<meta name="description" content="Mishri: a general store with wholesale prices for retailers and below-MRP prices for customers.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#f7f9fb;--surface:#fff;--ink:#1b2340;--muted:#5d6682;--line:#e1e6ee;--accent:#b8325a;--accent-ink:#fff;--crystal:#f2b84b;--ok:#1f7a4d}
-@media (prefers-color-scheme:dark){:root{--bg:#121728;--surface:#1b2238;--ink:#eef1f8;--muted:#a3accb;--line:#2c3552;--accent:#e0577f;--crystal:#f2b84b;--ok:#5fd08f}}
-*{box-sizing:border-box;margin:0}
-body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
-h1,h2,h3,.logo{font-family:'Bricolage Grotesque','DM Sans',system-ui,sans-serif}
-button{font:inherit;cursor:pointer;border:0;color:inherit;background:none}
-:focus-visible{outline:3px solid var(--crystal);outline-offset:2px}
-.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
-header{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:1px solid var(--line)}
-.bar{display:flex;align-items:center;gap:14px;padding:12px 0;flex-wrap:wrap}
-.logo{font-size:1.7rem;font-weight:800;letter-spacing:-.02em;color:var(--accent);margin-right:auto}
-.mode{display:flex;background:var(--bg);border:1px solid var(--line);border-radius:999px;padding:3px}
-.mode button{padding:7px 14px;border-radius:999px;font-weight:700;font-size:.9rem;color:var(--muted)}
-.mode button[aria-pressed=true]{background:var(--ink);color:var(--bg)}
-.cartbtn{background:var(--accent);color:var(--accent-ink);padding:9px 16px;border-radius:10px;font-weight:700}
-.cartbtn span{background:var(--crystal);color:#1b2340;border-radius:99px;padding:1px 8px;margin-left:6px;font-size:.85rem}
-.hero{padding:44px 0 26px}
-.hero h1{font-size:clamp(2.1rem,6vw,3.8rem);line-height:1.05;font-weight:800;letter-spacing:-.03em;max-width:15ch}
-.hero p{margin-top:14px;color:var(--muted);max-width:52ch;font-size:1.08rem}
-.banner{margin-top:20px;display:inline-flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);border-left:5px solid var(--crystal);border-radius:10px;padding:10px 14px;font-size:.95rem}
-.tools{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:8px 0 18px}
-.search{flex:1;min-width:200px;padding:11px 14px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);font:inherit}
-.chips{display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);font-weight:500;font-size:.92rem}
-.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding-bottom:50px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:6px}
-.pic{height:110px;border-radius:10px;background:var(--bg);display:grid;place-items:center;font-size:3.4rem;overflow:hidden}
-.pic img{width:100%;height:100%;object-fit:cover}
-.card h3{font-size:1.02rem;margin-top:6px}
-.cat{font-size:.82rem;color:var(--muted)}
-.price{display:flex;align-items:baseline;gap:8px;margin-top:auto;padding-top:8px}
-.price b{font-size:1.3rem}
-.price s{color:var(--muted);font-size:.9rem}
-.tag{font-size:.8rem;color:var(--ok);font-weight:700}
-.min{font-size:.8rem;color:var(--muted)}
-.add{margin-top:8px;background:var(--ink);color:var(--bg);padding:10px;border-radius:10px;font-weight:700}
-.add:hover{background:var(--accent);color:var(--accent-ink)}
-.empty{grid-column:1/-1;padding:40px 0;color:var(--muted)}
-/* drawer + modal */
-.veil{position:fixed;inset:0;background:rgba(10,14,30,.55);z-index:30;display:none}
-.veil.on{display:block}
-.drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,100%);background:var(--surface);z-index:31;transform:translateX(100%);transition:transform .25s;display:flex;flex-direction:column}
-.drawer.on{transform:none}
-.dh{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line)}
-.dh h2{font-size:1.3rem}
-.items{flex:1;overflow:auto;padding:8px 20px}
-.row{display:grid;grid-template-columns:1fr auto;gap:4px 10px;padding:12px 0;border-bottom:1px solid var(--line)}
-.qty{display:flex;align-items:center;gap:8px;margin-top:4px}
-.qty button{width:28px;height:28px;border-radius:8px;border:1px solid var(--line);font-weight:700}
-.rm{color:var(--accent);font-size:.85rem}
-.df{padding:16px 20px;border-top:1px solid var(--line);display:grid;gap:10px}
-.tot{display:flex;justify-content:space-between;font-weight:700;font-size:1.15rem}
-.go{background:var(--ok);color:#fff;padding:12px;border-radius:10px;font-weight:700}
-.warn{color:var(--accent);font-size:.88rem}
-.modal{position:fixed;z-index:32;left:50%;top:50%;transform:translate(-50%,-50%);width:min(420px,92%);background:var(--surface);border-radius:16px;padding:24px;display:none}
-.modal.on{display:block}
-.modal h2{margin-bottom:6px}
-.modal p{color:var(--muted);font-size:.93rem;margin-bottom:12px}
-.modal input{width:100%;padding:11px 12px;margin-bottom:10px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
-.modal .go{width:100%;background:var(--accent)}
-.cancel{display:block;margin:10px auto 0;color:var(--muted)}
-footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:.9rem;background:var(--surface)}
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:10px 18px;border-radius:10px;z-index:40;opacity:0;pointer-events:none;transition:opacity .2s}
-.toast.on{opacity:1}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
-
-.nav{display:flex;gap:18px;font-weight:500}
-.nav a{color:var(--ink);text-decoration:none}
-.nav a:hover{color:var(--accent)}
-.pic{background:#fff!important;height:190px!important}
-.pic img{object-fit:contain!important}
-.brand{font-size:.8rem;color:var(--accent);font-weight:700}
-section[id]{scroll-margin-top:80px}
-.band{background:var(--surface);border-top:1px solid var(--line);padding:56px 0}
-.band h2{font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.02em;margin-bottom:14px}
-.story{max-width:62ch}
-.story p{margin-bottom:14px;font-size:1.05rem}
-.story .sign{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;color:var(--accent);font-size:1.15rem}
-.vals{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:26px}
-.vals div{border-left:4px solid var(--crystal);padding:4px 14px}
-.vals b{display:block;font-size:1.05rem}
-.vals span{color:var(--muted);font-size:.95rem}
-.people{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:20px}
-.person{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:20px}
-.person h3{font-size:1.2rem;margin-bottom:8px}
-.person a{display:block;color:var(--ink);padding:3px 0;word-break:break-all}
-.person a:hover{color:var(--accent)}
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
   <div class="wrap bar">
     <div class="logo">Mishri</div>
-    <nav class="nav" aria-label="Main"><a href="#products">Shop</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+    <nav class="nav" aria-label="Main"><a href="index.html" aria-current="page">Shop</a><a href="about.html">About</a><a href="contact.html">Contact</a></nav>
     <div class="mode" role="group" aria-label="Shopping as">
       <button id="mCust" aria-pressed="true">Customer</button>
       <button id="mRet" aria-pressed="false">Retailer</button>
@@ -112,63 +23,34 @@ section[id]{scroll-margin-top:80px}
   </div>
 </header>
 
-<main>
-  <div class="wrap">
+<main class="wrap">
   <section class="hero">
     <h1>Everything for the shelf and the home.</h1>
     <p>Cosmetics and grooming today, with coffee, chocolates, snacks and daily essentials coming soon. Shop as a customer at prices below MRP, or as a verified retailer at wholesale rates.</p>
     <div class="banner" id="banner"></div>
   </section>
-
   <div class="tools" id="products">
     <input class="search" id="q" type="search" placeholder="Search products" aria-label="Search products">
     <div class="chips" id="chips"></div>
   </div>
   <div class="grid" id="grid"></div>
-  </div>
-
-  <section class="band" id="about"><div class="wrap">
-    <h2>A little sweetness, shared fairly</h2>
-    <div class="story">
-      <p>Mishri is named after the humble rock sugar that has ended meals and started celebrations in our homes for generations. It is small and simple, and everyone is glad to see it.</p>
-      <p>We started Mishri because we kept seeing the same two problems. Small shopkeepers, who open their shutters early and stay late, were paying more than they should to stock their shelves. And families were paying full MRP for everyday things they could have had for less.</p>
-      <p>So we built one place that works for both. Retailers buy in cases at true wholesale rates, so their margins stay healthy. Customers buy single items below MRP, so every household saves a little. We stand behind every box we send, and we answer our own phones.</p>
-      <p>Behind every order is a person: a shop owner stretching a budget, a mother buying for her family, a young barber stocking his first counter. We never forget that.</p>
-      <p class="sign">Thank you for being part of our story.</p>
-    </div>
-    <div class="vals">
-      <div><b>Fair to retailers</b><span>Wholesale rates that leave room for your margin.</span></div>
-      <div><b>Kind to customers</b><span>Every item priced below MRP, every day.</span></div>
-      <div><b>Genuine products</b><span>Known brands, sealed and packed with care.</span></div>
-    </div>
-  </div></section>
-
-  <section class="band" id="contact" style="background:var(--bg)"><div class="wrap">
-    <h2>Talk to us</h2>
-    <p style="color:var(--muted)">Questions about an order, a bulk rate or a new product? Call, WhatsApp or write to either of us.</p>
-    <div class="people">
-      <div class="person"><h3>Harry</h3>
-        <a href="tel:+919888025703">📞 +91 98880 25703</a>
-        <a href="https://wa.me/919888025703">💬 WhatsApp</a>
-        <a href="mailto:harry7870@gmail.com">✉️ harry7870@gmail.com</a></div>
-      <div class="person"><h3>Jaskaran</h3>
-        <a href="tel:+918427225250">📞 +91 84272 25250</a>
-        <a href="https://wa.me/918427225250">💬 WhatsApp</a>
-        <a href="mailto:jaskaran7870@gmail.com">✉️ jaskaran7870@gmail.com</a></div>
-    </div>
-  </div></section>
 </main>
 
-<footer><div class="wrap">© <span id="yr"></span> Mishri. Prices are in ₹ and include all taxes unless stated otherwise.</div></footer>
+<footer><div class="wrap"><a href="about.html">About us</a><a href="contact.html">Contact us</a><br>© <span id="yr"></span> Mishri. Prices are in ₹ and include all taxes unless stated otherwise.</div></footer>
 
 <div class="veil" id="veil"></div>
+
+<div class="pm" id="pm" role="dialog" aria-label="Product details"></div>
 
 <aside class="drawer" id="drawer" aria-label="Shopping cart">
   <div class="dh"><h2>Your cart</h2><button id="closeCart" aria-label="Close cart">✕</button></div>
   <div class="items" id="items"></div>
   <div class="df">
+    <div class="cp"><input id="coupon" placeholder="Coupon code" autocomplete="off" aria-label="Coupon code"><button id="applyC">Apply</button></div>
+    <div class="cmsg" id="cmsg"></div>
+    <textarea class="note" id="note" rows="2" placeholder="Note for us (e.g. preferred variant or skin type)"></textarea>
+    <div class="sum" id="sum"></div>
     <div class="warn" id="warn"></div>
-    <div class="tot"><span>Total</span><span id="total">₹0</span></div>
     <button class="go" id="checkout">Place order on WhatsApp</button>
   </div>
 </aside>
@@ -187,35 +69,57 @@ section[id]{scroll-margin-top:80px}
 <script>
 /* ============ SETTINGS: edit these ============ */
 const CONFIG = {
-  whatsapp: "919888025703",        // orders go to this WhatsApp number (country code, no + or spaces)
+  whatsapp: "919888025703",        // orders go to this WhatsApp number
+  retailerCode: "MISHRI-RETAIL",   // change this, share only with real retailers
   customerDiscount: 10,            // % below MRP that customers pay (override per product with customer:)
-  retailerCode: "MISHRI-RETAIL",   // change this, and share it only with real retailers
-  currency: "₹"
+  currency: "₹",
+  /* COUPONS: type "percent" or "flat"; for "customer", "retailer" or "all"; min = minimum order value; max = cap for percent */
+  coupons: {
+    WELCOME10: {type:"percent", value:10, max:300, for:"customer"},
+    SAVE100:   {type:"flat",    value:100, min:1000, for:"all"},
+    RETAIL5:   {type:"percent", value:5,   for:"retailer"}
+  }
 };
 
-/* ============ PRODUCTS: add or edit here ============
-   mrp       = printed retail price
-   customer  = price a normal customer pays (below MRP)
-   wholesale = price a retailer pays
-   minQty    = minimum quantity a retailer must order
-   image     = optional, e.g. "images/coffee.jpg" (emoji is used if empty)  */
+/* ============ PRODUCTS ============
+   wholesale = retailer rate per piece, minQty = one full case. desc + points show on the product page. */
 const CATEGORIES = ["Cosmetics"];
-// wholesale = retailer rate per piece, minQty = one full case. Leave customer empty to use customerDiscount.
 const PRODUCTS = [
-  {id:1, brand:"Fuji Blend", name:"Facial Kit (7 steps, 5 variants)", cat:"Cosmetics", mrp:580, wholesale:261, minQty:72, image:"images/fuji-blend-facial-kit.jpg"},
-  {id:2, brand:"Ghar Soaps", name:"Magic De-Tanning Soap (pack of 3)", cat:"Cosmetics", mrp:470, wholesale:290, minQty:37, image:"images/ghar-magic-soap.jpg"},
-  {id:3, brand:"Ghar Soaps", name:"Magic Face Wash 100ml", cat:"Cosmetics", mrp:333, wholesale:215, minQty:48, image:"images/ghar-magic-face-wash.jpg"},
-  {id:4, brand:"O3+ Professional", name:"Bridal Facial Kit", cat:"Cosmetics", mrp:920, wholesale:488, minQty:72, image:"images/o3-bridal-facial-kit.jpg"},
-  {id:5, brand:"O3+ Professional", name:"Shine & Glow Kit", cat:"Cosmetics", mrp:830, wholesale:498, minQty:72, image:"images/o3-shine-glow.jpg"},
-  {id:6, brand:"Beardo", name:"Godfather Eau de Parfum 100ml", cat:"Cosmetics", mrp:699, wholesale:322, minQty:36, image:"images/beardo-godfather.jpg"},
-  {id:7, brand:"Beardo", name:"Whisky Smoke Eau de Parfum 100ml", cat:"Cosmetics", mrp:699, wholesale:322, minQty:36, image:"images/beardo-whisky-smoke.jpg"},
-  {id:8, brand:"Beardo", name:"Charcoal 3-in-1 Face Wash 100ml", cat:"Cosmetics", mrp:325, wholesale:150, minQty:96, image:"images/beardo-charcoal-face-wash.jpg"},
-  {id:9, brand:"Beardo", name:"Ultra Glow Face Wash 100g", cat:"Cosmetics", mrp:350, wholesale:161, minQty:96, image:"images/beardo-ultra-glow-face-wash.jpg"},
-  {id:10,brand:"Raaga Professional", name:"Express Facial Kit (pack of 6)", cat:"Cosmetics", mrp:795, wholesale:445, minQty:8, image:"images/raaga-express-facial.jpg"}
+  {id:1, brand:"Fuji Blend", name:"Facial Kit (7 steps, 5 variants)", cat:"Cosmetics", mrp:580, wholesale:261, minQty:72, image:"images/fuji-blend-facial-kit.jpg",
+   desc:"A professional 7-step single-use facial ritual from Fuji Blend, made for salon use. Choose from five variants and tell us your pick in the cart note.",
+   points:["Fermented Wine Elixir: renew, firm, radiate. For normal, dry, mature and dull skin","Korean Glow with rice water and pine cica: dewy, brightening, smoothing","Volcanic Ash Detox: for oily, combination and acne-prone skin","Yuzu Anti Tan: for normal, oily, combination and tanned skin","Cica Calm: for sensitive, dry and barrier-damaged skin"]},
+  {id:2, brand:"Ghar Soaps", name:"Magic De-Tanning Soap (pack of 3)", cat:"Cosmetics", mrp:470, wholesale:290, minQty:37, image:"images/ghar-magic-soap.jpg",
+   desc:"An Ayurveda-and-science bathing bar made to help reduce body tan. Results vary from person to person.",
+   points:["Pack of 3 bars, 100 g each (300 g total)","Contains sandalwood powder, rice powder and saffron","Dermatologically tested and found safe for human skin","For external use only. Keep the bar dry between uses"]},
+  {id:3, brand:"Ghar Soaps", name:"Magic Face Wash 100ml", cat:"Cosmetics", mrp:333, wholesale:215, minQty:48, image:"images/ghar-magic-face-wash.jpg",
+   desc:"A face wash with encapsulated lactic acid and saffron, made to help reduce tanning and brighten dull skin.",
+   points:["Reduces tanning and brightens dull skin","Improves skin texture","Suitable for all skin types","Net volume 100 ml"]},
+  {id:4, brand:"O3+ Professional", name:"Bridal Facial Kit", cat:"Cosmetics", mrp:920, wholesale:488, minQty:72, image:"images/o3-bridal-facial-kit.jpg",
+   desc:"A single-use professional facial for radiant, glowing skin, designed and developed in Italy. A popular choice before weddings and special occasions.",
+   points:["Hydrating, with tan removal and help for uneven skin tone","Key ingredients: niacinamide, panthenol, vitamin C and arbutin","Boosts radiance and natural glow","Single use"]},
+  {id:5, brand:"O3+ Professional", name:"Shine & Glow Kit", cat:"Cosmetics", mrp:830, wholesale:498, minQty:72, image:"images/o3-shine-glow.jpg",
+   desc:"An express-glow, 7-step facial designed and developed in Italy. Brightens, smooths and renews skin.",
+   points:["Lactic acid plus alpha arbutin","7-step express facial","Single use"]},
+  {id:6, brand:"Beardo", name:"Godfather Eau de Parfum 100ml", cat:"Cosmetics", mrp:699, wholesale:322, minQty:36, image:"images/beardo-godfather.jpg",
+   desc:"Beardo's Godfather, a bold eau de parfum for men in a 100 ml bottle.",
+   points:["Eau de parfum, 100 ml","Long-lasting spray bottle"]},
+  {id:7, brand:"Beardo", name:"Whisky Smoke Eau de Parfum 100ml", cat:"Cosmetics", mrp:699, wholesale:322, minQty:36, image:"images/beardo-whisky-smoke.jpg",
+   desc:"A warm, smoky eau de parfum from Beardo in a 100 ml bottle.",
+   points:["Top notes: whiskey and black pepper","Middle notes: cinnamon and coriander","Base notes: sandalwood and patchouli"]},
+  {id:8, brand:"Beardo", name:"Charcoal 3-in-1 Face Wash 100ml", cat:"Cosmetics", mrp:325, wholesale:150, minQty:96, image:"images/beardo-charcoal-face-wash.jpg",
+   desc:"An activated charcoal face wash for men that does three jobs in one.",
+   points:["Oil control","Anti-pollution","Acne control","Net volume 100 ml"]},
+  {id:9, brand:"Beardo", name:"Ultra Glow Face Wash 100g", cat:"Cosmetics", mrp:350, wholesale:161, minQty:96, image:"images/beardo-ultra-glow-face-wash.jpg",
+   desc:"A face wash with niacinamide, vitamin C and kojic acid that helps brighten and even out skin tone.",
+   points:["Power of 3: niacinamide, vitamin C, kojic acid","Helps brighten and even skin tone","Net weight 100 g"]},
+  {id:10,brand:"Raaga Professional", name:"Express Facial Kit (pack of 6)", cat:"Cosmetics", mrp:795, wholesale:445, minQty:8, image:"images/raaga-express-facial.jpg",
+   desc:"A pack of 6 express facials from Raaga Professional, in two versions. Tell us which one you want in the cart note.",
+   points:["Peach box: for normal to dry skin","Green box: for normal to oily skin","Pack of 6"]}
 ];
 
 /* ============ APP LOGIC ============ */
 const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const money = n => CONFIG.currency + n.toLocaleString("en-IN");
 const store = {
   get(k,d){try{const v=localStorage.getItem(k);return v===null?d:JSON.parse(v)}catch(e){return d}},
@@ -224,117 +128,177 @@ const store = {
 let mode = store.get("mishri_mode","customer");
 let shopName = store.get("mishri_shop","");
 let cart = store.get("mishri_cart",{});
-let cat = "All";
+let coupon = store.get("mishri_coupon","");
+let cat = "All", pqty = 1;
 
 const isRetail = () => mode === "retailer";
 const custPrice = p => p.customer || Math.round(p.mrp*(1-CONFIG.customerDiscount/100));
 const unitPrice = p => isRetail() ? p.wholesale : custPrice(p);
 const minFor = p => isRetail() ? p.minQty : 1;
+const byId = id => PRODUCTS.find(p=>p.id===+id);
 
 function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("on");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("on"),1800)}
+function sync(){const any=["drawer","modal","pm"].some(i=>$(i).classList.contains("on"));$("veil").classList.toggle("on",any);document.body.style.overflow=any?"hidden":""}
+function show(id,on){$(id).classList.toggle("on",on);sync()}
+function closeAll(){["drawer","modal","pm"].forEach(i=>$(i).classList.remove("on"));sync();history.replaceState(null,"",location.pathname+location.search)}
 
 function renderChips(){
   $("chips").innerHTML = CATEGORIES.length<2 ? "" : ["All",...CATEGORIES].map(c=>`<button class="chip" aria-pressed="${c===cat}" data-c="${c}">${c}</button>`).join("");
   $("chips").querySelectorAll("button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;renderChips();renderGrid()});
 }
-
 function renderBanner(){
   $("banner").innerHTML = isRetail()
-    ? `<b>Retailer mode${shopName?` · ${esc(shopName)}`:""}.</b> Wholesale prices shown. Minimum quantity applies per item.`
+    ? `<b>Retailer mode${shopName?` · ${esc(shopName)}`:""}.</b> Wholesale prices shown. Orders are in full cases.`
     : `<b>Customer prices.</b> Every item is below MRP. Retailers: switch to Retailer for wholesale rates.`;
   $("mCust").setAttribute("aria-pressed", !isRetail());
   $("mRet").setAttribute("aria-pressed", isRetail());
 }
-const esc = s => String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-
 function renderGrid(){
   const q = $("q").value.trim().toLowerCase();
-  const list = PRODUCTS.filter(p => (cat==="All"||p.cat===cat) && (!q || p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)));
+  const list = PRODUCTS.filter(p => (cat==="All"||p.cat===cat) && (!q || (p.name+" "+p.brand).toLowerCase().includes(q)));
   $("grid").innerHTML = list.length ? list.map(p=>{
     const save = Math.round((1 - unitPrice(p)/p.mrp)*100);
     return `<article class="card">
-      <div class="pic">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`:p.emoji}</div>
-      <span class="brand">${esc(p.brand||p.cat)}</span>
-      <h3>${esc(p.name)}</h3>
+      <button class="pic" data-open="${p.id}" aria-label="View ${esc(p.name)}">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">`:""}</button>
+      <span class="brand">${esc(p.brand)}</span>
+      <h3><button class="lnk" data-open="${p.id}">${esc(p.name)}</button></h3>
       <div class="price"><b>${money(unitPrice(p))}</b><s>${money(p.mrp)}</s></div>
       <span class="tag">${save}% below MRP</span>
       ${isRetail()?`<span class="min">Case size ${p.minQty} pcs · minimum order 1 case</span>`:""}
       <button class="add" data-id="${p.id}">Add to cart</button>
-    </article>`}).join("") : `<p class="empty">No products match your search. Try another word or category.</p>`;
+    </article>`}).join("") : `<p class="empty">No products match your search. Try another word.</p>`;
   $("grid").querySelectorAll(".add").forEach(b=>b.onclick=()=>addToCart(+b.dataset.id));
+  $("grid").querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>openProduct(+b.dataset.open));
 }
 
+/* ---- product page ---- */
+function openProduct(id){
+  const p = byId(id); if(!p) return;
+  pqty = minFor(p);
+  const price = unitPrice(p), save = p.mrp-price, pct = Math.round(save/p.mrp*100);
+  $("pm").innerHTML = `<div class="pdp">
+    <button class="x" id="pmx" aria-label="Close">✕</button>
+    <div class="big">${p.image?`<img src="${esc(p.image)}" alt="${esc(p.name)}">`:""}</div>
+    <div>
+      <span class="brand">${esc(p.brand)}</span>
+      <h2>${esc(p.name)}</h2>
+      <div class="pp"><b>${money(price)}</b><s>MRP ${money(p.mrp)}</s><span class="tag">${pct}% off</span></div>
+      <div class="tag">You save ${money(save)} per piece</div>
+      ${isRetail()?`<div class="box">Wholesale rate. Case size ${p.minQty} pcs. Minimum order is 1 case (${money(price*p.minQty)}).</div>`:""}
+      <p style="margin-top:12px">${esc(p.desc||"")}</p>
+      ${p.points?`<ul>${p.points.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}
+      <div class="buy">
+        <div class="qty"><button id="pm-" aria-label="Decrease">−</button><span id="pq">${pqty}</span><button id="pm+" aria-label="Increase">+</button></div>
+        <button class="add" id="pmadd">Add to cart</button>
+      </div>
+      <div class="box">Use a coupon code in the cart for extra savings. Orders are confirmed on WhatsApp.</div>
+    </div></div>`;
+  $("pm-").onclick=()=>{pqty=Math.max(minFor(p),pqty-1);$("pq").textContent=pqty};
+  $("pm+").onclick=()=>{pqty++;$("pq").textContent=pqty};
+  $("pmadd").onclick=()=>{cart[p.id]=(cart[p.id]||0)+pqty;saveCart();toast(`${pqty} × ${p.name} added`)};
+  $("pmx").onclick=closeAll;
+  $("pm").onclick=e=>{if(e.target===$("pm"))closeAll()};
+  $("pm").scrollTop=0; show("pm",true);
+  history.replaceState(null,"","#p"+id);
+}
+
+/* ---- cart ---- */
 function addToCart(id){
-  const p = PRODUCTS.find(x=>x.id===id);
+  const p = byId(id);
   cart[id] = (cart[id]||0) + (cart[id] ? 1 : minFor(p));
   saveCart(); toast(`${p.name} added`);
 }
-function setQty(id,delta){
-  const p = PRODUCTS.find(x=>x.id===id);
-  const n = (cart[id]||0)+delta;
-  if(n<=0) delete cart[id]; else cart[id]=n;
-  saveCart();
-}
+function setQty(id,d){const n=(cart[id]||0)+d; if(n<=0) delete cart[id]; else cart[id]=n; saveCart()}
 function saveCart(){store.set("mishri_cart",cart);renderCart()}
+const cartIds = () => Object.keys(cart).map(Number).filter(id=>byId(id));
+const subtotal = () => cartIds().reduce((s,id)=>s+unitPrice(byId(id))*cart[id],0);
+
+function couponCheck(code,sub){
+  const c = CONFIG.coupons[code];
+  if(!c) return {ok:false,msg:"That code is not valid."};
+  if(c.for==="customer"&&isRetail()) return {ok:false,msg:"This code is for customers only."};
+  if(c.for==="retailer"&&!isRetail()) return {ok:false,msg:"This code is for retailers only."};
+  if(c.min&&sub<c.min) return {ok:false,msg:`Add ${money(c.min-sub)} more to use this code.`};
+  let d = c.type==="percent" ? Math.round(sub*c.value/100) : c.value;
+  if(c.max) d=Math.min(d,c.max);
+  return {ok:true,d:Math.min(d,sub)};
+}
+let cmsg = {t:"",ok:false};
+function applyCoupon(){
+  const code = $("coupon").value.trim().toUpperCase(); if(!code) return;
+  const r = couponCheck(code,subtotal());
+  if(r.ok){coupon=code;store.set("mishri_coupon",code);cmsg={t:`${code} applied. You save ${money(r.d)}.`,ok:true}}
+  else cmsg={t:r.msg,ok:false};
+  renderCart();
+}
+function totals(){
+  const sub=subtotal(); let d=0;
+  if(coupon){const r=couponCheck(coupon,sub); if(r.ok) d=r.d; else {cmsg={t:`${coupon} removed. ${r.msg}`,ok:false};coupon="";store.set("mishri_coupon","")}}
+  return {sub,d,total:sub-d};
+}
 
 function renderCart(){
-  const ids = Object.keys(cart).map(Number).filter(id=>PRODUCTS.some(p=>p.id===id));
-  let total=0, bad=[], n=0;
+  const ids = cartIds(); let bad=[], n=0;
   $("items").innerHTML = ids.length ? ids.map(id=>{
-    const p = PRODUCTS.find(x=>x.id===id), q=cart[id], line=unitPrice(p)*q;
-    total+=line; n+=q;
+    const p=byId(id), q=cart[id]; n+=q;
     if(q<minFor(p)) bad.push(`${p.name} needs at least ${p.minQty}`);
     return `<div class="row">
       <div><b>${esc(p.name)}</b><div class="cat">${money(unitPrice(p))} each</div>
         <div class="qty"><button data-d="-1" data-id="${id}" aria-label="Decrease">−</button><span>${q}</span><button data-d="1" data-id="${id}" aria-label="Increase">+</button></div></div>
-      <div style="text-align:right"><b>${money(line)}</b><br><button class="rm" data-rm="${id}">Remove</button></div>
+      <div style="text-align:right"><b>${money(unitPrice(p)*q)}</b><br><button class="rm" data-rm="${id}">Remove</button></div>
     </div>`}).join("") : `<p class="empty">Your cart is empty. Add something from the shop.</p>`;
   $("items").querySelectorAll("[data-d]").forEach(b=>b.onclick=()=>setQty(+b.dataset.id,+b.dataset.d));
   $("items").querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{delete cart[b.dataset.rm];saveCart()});
-  $("total").textContent = money(total);
+  const t = totals();
+  $("sum").innerHTML = `<div><span>Subtotal</span><span>${money(t.sub)}</span></div>`
+    + (t.d?`<div style="color:var(--ok)"><span>Coupon ${esc(coupon)} <button class="rm" id="rmc">Remove</button></span><span>−${money(t.d)}</span></div>`:"")
+    + `<div class="tot"><span>Total</span><span>${money(t.total)}</span></div>`;
+  if($("rmc")) $("rmc").onclick=()=>{coupon="";store.set("mishri_coupon","");cmsg={t:"",ok:false};renderCart()};
+  $("cmsg").textContent=cmsg.t; $("cmsg").className="cmsg"+(cmsg.ok?" ok":"");
   $("count").textContent = n;
   $("warn").textContent = bad.join(". ");
   $("checkout").disabled = !ids.length || bad.length>0;
   $("checkout").style.opacity = $("checkout").disabled ? .5 : 1;
 }
 
-function openCart(on){$("drawer").classList.toggle("on",on);$("veil").classList.toggle("on",on||$("modal").classList.contains("on"))}
-function openModal(on){$("modal").classList.toggle("on",on);$("veil").classList.toggle("on",on);$("err").textContent="";if(on)$("shop").focus()}
-
 function setMode(m){
   mode=m; store.set("mishri_mode",m);
-  // Retailer minimums: top up any retailer quantity below the minimum when switching in
   if(m==="retailer") PRODUCTS.forEach(p=>{if(cart[p.id]&&cart[p.id]<p.minQty)cart[p.id]=p.minQty});
   store.set("mishri_cart",cart);
   renderBanner();renderGrid();renderCart();
+  if($("pm").classList.contains("on")){const id=+location.hash.slice(2); if(id) openProduct(id)}
 }
 
 $("mCust").onclick=()=>setMode("customer");
-$("mRet").onclick=()=>{ if(isRetail()) return; openModal(true) };
+$("mRet").onclick=()=>{ if(!isRetail()){show("modal",true);$("err").textContent="";$("shop").focus()} };
 $("unlock").onclick=()=>{
   if($("code").value.trim()!==CONFIG.retailerCode){$("err").textContent="That code is not correct. Check it and try again.";return}
   shopName=$("shop").value.trim(); store.set("mishri_shop",shopName);
-  openModal(false); $("code").value=""; setMode("retailer"); toast("Wholesale prices unlocked");
+  $("code").value=""; show("modal",false); setMode("retailer"); toast("Wholesale prices unlocked");
 };
-$("cancel").onclick=()=>openModal(false);
-$("openCart").onclick=()=>openCart(true);
-$("closeCart").onclick=()=>openCart(false);
-$("veil").onclick=()=>{openCart(false);openModal(false);$("veil").classList.remove("on")};
-document.addEventListener("keydown",e=>{if(e.key==="Escape"){openCart(false);openModal(false);$("veil").classList.remove("on")}});
+$("cancel").onclick=()=>show("modal",false);
+$("openCart").onclick=()=>show("drawer",true);
+$("closeCart").onclick=()=>show("drawer",false);
+$("veil").onclick=closeAll;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeAll()});
 $("q").oninput=renderGrid;
+$("applyC").onclick=applyCoupon;
+$("coupon").onkeydown=e=>{if(e.key==="Enter")applyCoupon()};
 
 $("checkout").onclick=()=>{
-  const lines = Object.keys(cart).map(Number).map(id=>{
-    const p=PRODUCTS.find(x=>x.id===id); if(!p) return null;
-    return `• ${p.name} × ${cart[id]} = ${money(unitPrice(p)*cart[id])}`}).filter(Boolean);
-  const total = Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===+id);return s+(p?unitPrice(p)*cart[id]:0)},0);
+  const t=totals();
+  const lines = cartIds().map(id=>{const p=byId(id);return `• ${p.brand} ${p.name} × ${cart[id]} = ${money(unitPrice(p)*cart[id])}`});
   const head = isRetail() ? `New RETAILER order${shopName?` from ${shopName}`:""}` : "New CUSTOMER order";
-  const msg = `${head} (Mishri)\n\n${lines.join("\n")}\n\nTotal: ${money(total)}`;
+  const note = $("note").value.trim();
+  const msg = `${head} (Mishri)\n\n${lines.join("\n")}\n\nSubtotal: ${money(t.sub)}`
+    + (t.d?`\nCoupon ${coupon}: −${money(t.d)}`:"") + `\nTotal: ${money(t.total)}`
+    + (note?`\n\nNote: ${note}`:"");
   window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,"_blank");
 };
 
 $("yr").textContent=new Date().getFullYear();
 renderChips();renderBanner();renderGrid();renderCart();
+if(/^#p\d+$/.test(location.hash)) openProduct(+location.hash.slice(2));
 </script>
 </body>
 </html>
